@@ -19,6 +19,7 @@ use crate::amoe::{
     AnyMoeBaseModelMixin, AnyMoeConfig, AnyMoeExpertType, AnyMoeTrainingInputs,
     AnyMoeTrainingResult,
 };
+use crate::kv_cache_compression::KVCacheCompressionConfig;
 use crate::lora::{LoraConfig, Ordering};
 use crate::paged_attention::{CacheConfig, CacheEngine, ModelConfigMetadata, PagedAttentionConfig};
 use crate::prefix_cacher::PrefixCacheManager;
@@ -409,6 +410,7 @@ pub trait Loader {
         mapper: DeviceMapMetadata,
         in_situ_quant: Option<GgmlDType>,
         paged_attn_config: Option<PagedAttentionConfig>,
+        kv_compression_config: Option<KVCacheCompressionConfig>,
     ) -> Result<Arc<Mutex<dyn Pipeline + Send + Sync>>>;
 
     /// Load a model from the specified paths.
@@ -427,6 +429,7 @@ pub trait Loader {
         mapper: DeviceMapMetadata,
         in_situ_quant: Option<GgmlDType>,
         paged_attn_config: Option<PagedAttentionConfig>,
+        kv_compression_config: Option<KVCacheCompressionConfig>,
     ) -> Result<Arc<Mutex<dyn Pipeline + Send + Sync>>>;
 
     fn get_id(&self) -> String;

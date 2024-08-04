@@ -57,6 +57,7 @@ mod tools;
 mod utils;
 mod vision_models;
 mod xlora_models;
+mod kv_cache_compression;
 
 pub use amoe::{AnyMoeConfig, AnyMoeExpertType};
 pub use device_map::{DeviceLayerMapMetadata, DeviceMapMetadata, LayerDeviceMapper};

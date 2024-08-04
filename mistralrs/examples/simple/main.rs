@@ -30,7 +30,7 @@ fn setup() -> anyhow::Result<Arc<MistralRs>> {
         },
         None,
         None,
-        Some("mistralai/Mistral-7B-Instruct-v0.1".to_string()),
+        Some("/root/autodl-tmp/huggingface/hub/models--mistralai--Mistral-7B-Instruct-v0.2/snapshots/250544c9a802b0396550d0fd24bc80ff98bb1f5f".to_string()),
     )
     .build(NormalLoaderType::Mistral);
     // Load, into a Pipeline
@@ -43,6 +43,7 @@ fn setup() -> anyhow::Result<Arc<MistralRs>> {
         DeviceMapMetadata::dummy(),
         None,
         None, // No PagedAttention.
+        None,
     )?;
     // Create the MistralRs, which is a runner
     Ok(MistralRsBuilder::new(

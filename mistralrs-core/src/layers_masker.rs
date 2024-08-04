@@ -8,7 +8,7 @@ use candle_core::{DType, Device, Result, Tensor, WithDType};
 pub struct CausalMasker;
 
 // https://github.com/mokeyish/candle-ext/blob/main/src/triangular.rs
-fn apply_tril(xs: &Tensor, diagonal: isize) -> Result<Tensor> {
+pub fn apply_tril(xs: &Tensor, diagonal: isize) -> Result<Tensor> {
     let device = xs.device();
     let (l, s) = xs.dims2()?;
     let mut xs_tri = vec![];
@@ -23,7 +23,7 @@ fn apply_tril(xs: &Tensor, diagonal: isize) -> Result<Tensor> {
 
 // https://github.com/mokeyish/candle-ext/blob/main/src/masked_fill.rs
 /// xs are on false (0), value is on true (1)
-fn masked_fill<D: WithDType>(xs: &Tensor, mask: &Tensor, value: D) -> Result<Tensor> {
+pub fn masked_fill<D: WithDType>(xs: &Tensor, mask: &Tensor, value: D) -> Result<Tensor> {
     let on_true = Tensor::full(value, xs.shape(), xs.device())?.to_dtype(xs.dtype())?;
     let on_false = xs;
     let res = mask
@@ -187,7 +187,7 @@ impl CausalMasker {
             let diagonal = past_kv_len as isize - sliding_window as isize - 1;
             let context_mask = apply_tril(&mask.ones_like()?, diagonal)?;
             let mask = masked_fill(&mask.to_dtype(DType::F32)?, &context_mask, f32::MIN)?;
-            let mask = mask
+            let mask: Tensor = mask
                 .expand((b_sz, 1, tgt_len, tgt_len + past_kv_len))?
                 .to_dtype(DType::U8)?;
 
